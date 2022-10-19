@@ -9,7 +9,7 @@ library(openxlsx)
 load("/Users/Kitty/tmp/CountsAll.RData")
 
 # we limit this analysis to the autosome. To call chrX/chrY, simply select a single sex reference set that matches the sample of interest.
-all.counts = all.counts[which(!all.counts$chromosome %in% c("chrX", "chrY")),]
+all.counts = all.counts[which(!all.counts$chromosome %in% c("chrX", "chrY")), ]
 
 # load the family codes xlsx
 familyCodes = read.xlsx("/Users/Kitty/Downloads/Family Codes for CNV .xlsx")
@@ -130,5 +130,14 @@ for (id in familyCodes$all.counts.ID) {
   all.cnvs = rbind(all.cnvs, CNV_calls)
   
 }
+
+write.table(
+  all.cnvs,
+  file = "all.cnvs.txt",
+  quote = F,
+  col.names = T,
+  sep = "\t",
+  row.names = F
+)
 
 #write all.cnvs to file if desired

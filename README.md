@@ -16,5 +16,6 @@ Please use the canonical form https://CRAN.R-project.org/package=ExomeDepth to l
 
 ```
 
-2. Install openxlsx
+3. Install openxlsx
 	- `install.packages("openxlsx")`
+4. Adopt exomeDepthRelated.R to correct paths, and then run
