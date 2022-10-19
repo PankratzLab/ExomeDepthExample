@@ -17,6 +17,7 @@ all.counts = all.counts[which(!all.counts$chromosome %in% c("chrX", "chrY")),]
 all.samples = colnames(all.counts)[!colnames(all.counts) %in% c("chromosome", "start", "end", "exon")]
 lowCoverage = apply(X = all.counts[, all.samples],
                     MAR = 1,                    FUN = mean) < 1
+
 print(paste0(
   "removing ",
   length(lowCoverage[lowCoverage]),
