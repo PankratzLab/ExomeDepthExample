@@ -160,7 +160,7 @@ for (id in familyCodes$all.counts.ID) {
   CNV_calls$referenceExcluded = paste0(excludeFromReferenceSet, collapse = ",")
   
   # combine this current samples calls with all others
-  all.cnvs = rbind(all.cnvs, CNV_calls) 
+  all.cnvs = rbind(all.cnvs, CNV_calls)  
   
 }
 
