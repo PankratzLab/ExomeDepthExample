@@ -22,8 +22,9 @@ update = grepl("^[[:digit:]]+", familyCodes$all.counts.ID)
 #Update them
 familyCodes$all.counts.ID[update] = paste0("X", familyCodes$all.counts.ID[update])
 
+# all.cnvs will store all of our CNV calls
 all.cnvs = data.frame()
-for (id in familyCodes$all.counts.ID[1:10]) {
+for (id in familyCodes$all.counts.ID) {
   if (!id %in% colnames(all.counts)) {
     print(paste0("WARNING: ", id, " was not found in the all.counts dataframe"))
     next
@@ -100,6 +101,7 @@ for (id in familyCodes$all.counts.ID[1:10]) {
     as.matrix(all.counts[, my.choice$reference.choice, drop = FALSE])
   
   
+  # for each exon, sum the counts across each row
   my.reference.selected <- apply(X = my.matrix,
                                  MAR = 1,
                                  FUN = sum)
@@ -110,6 +112,7 @@ for (id in familyCodes$all.counts.ID[1:10]) {
     formula = 'cbind(test, reference) ~ 1'
   )
   
+  # call cnvs
   all.exons <- CallCNVs(
     x = all.exons,
     transition.probability = 10 ^ -4,
@@ -120,9 +123,12 @@ for (id in familyCodes$all.counts.ID[1:10]) {
   )
   
   CNV_calls <- all.exons@CNV.calls
+  # store the sample id in this dataframe
   CNV_calls$sample = id
+  # store the samples that were selected for the reference distribution
   CNV_calls$reference = paste0(my.choice$reference.choice, collapse = ",")
   all.cnvs = rbind(all.cnvs, CNV_calls)
+  
 }
 
 #write all.cnvs to file if desired
