@@ -26,7 +26,7 @@ familyCodes$all.counts.ID[update] = paste0("X", familyCodes$all.counts.ID[update
 
 # all.cnvs will store all of our CNV calls
 all.cnvs = data.frame()
-for (id in familyCodes$all.counts.ID[1:5]) {
+for (id in familyCodes$all.counts.ID) {
   if (!id %in% colnames(all.counts)) {
     print(paste0("WARNING: ", id, " was not found in the all.counts dataframe"))
     next
@@ -97,11 +97,19 @@ for (id in familyCodes$all.counts.ID[1:5]) {
       10,
     n.bins.reduced = 10000
   )
-  
+
+  # double check that no reference sample is from the current family
+  selectedFamilies = familyCodes$Family.ID[which(familyCodes$all.counts.ID %in% my.choice$reference.choice)]
+  if (!currentFamily %in% selectedFamilies) {
+    print(paste0(currentFamily," seen in selected reference families ",paste0(selectedFamilies,collapse = ", ")))
+  }
+    
   # extract the read counts for the optimzed set of reference samples
   my.matrix <-
     as.matrix(all.counts[, my.choice$reference.choice, drop = FALSE])
   
+  
+
   
   # for each exon, sum the counts across each row
   my.reference.selected <- apply(X = my.matrix,
