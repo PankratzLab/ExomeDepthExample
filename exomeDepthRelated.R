@@ -130,7 +130,7 @@ for (id in familyCodes$all.counts.ID[1:5]) {
   
   # store the sample id in this dataframe
   CNV_calls$sample = id
-  CNV_calls$familyID = familyID
+  CNV_calls$familyID = currentFamily
   # store the samples that were selected for the reference distribution
   CNV_calls$referenceSelected = paste0(my.choice$reference.choice, collapse = ",")
   
