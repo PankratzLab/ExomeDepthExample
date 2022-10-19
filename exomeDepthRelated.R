@@ -11,7 +11,7 @@ library(openxlsx)
 load("/Users/Kitty/tmp/CountsAll.RData")
 
 # we limit this analysis to the autosome. To call chrX/chrY, simply select a single sex reference set that matches the sample of interest.
-all.counts = all.counts[which(!all.counts$chromosome %in% c("chrX", "chrY")), ]
+all.counts = all.counts[which(!all.counts$chromosome %in% c("chrX", "chrY")),]
 
 # load the family codes xlsx provided
 familyCodes = read.xlsx("/Users/Kitty/Downloads/Family Codes for CNV .xlsx")
@@ -99,7 +99,7 @@ for (id in familyCodes$all.counts.ID) {
   )
   
   # double check that no reference sample is from the current family
-  selectedFamilies = familyCodes$Family.ID[which(familyCodes$all.counts.ID %in% my.choice$reference.choice)]
+  selectedFamilies = unique(familyCodes$Family.ID[which(familyCodes$all.counts.ID %in% my.choice$reference.choice)])
   if (!currentFamily %in% selectedFamilies) {
     stop(paste0(
       currentFamily,
