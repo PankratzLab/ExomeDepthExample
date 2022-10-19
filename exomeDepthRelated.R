@@ -100,7 +100,7 @@ for (id in familyCodes$all.counts.ID) {
   
   # double check that no reference sample is from the current family
   selectedFamilies = unique(familyCodes$Family.ID[which(familyCodes$all.counts.ID %in% my.choice$reference.choice)])
-  if (!currentFamily %in% selectedFamilies) {
+  if (currentFamily %in% selectedFamilies) {
     stop(paste0(
       currentFamily,
       " seen in selected reference families ",
