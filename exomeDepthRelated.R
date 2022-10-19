@@ -125,14 +125,24 @@ for (id in familyCodes$all.counts.ID) {
   )
   
   CNV_calls <- all.exons@CNV.calls
+  
+  # The following additions to dataframe can be changed as desired
+  
   # store the sample id in this dataframe
   CNV_calls$sample = id
+  CNV_calls$familyID = familyID
   # store the samples that were selected for the reference distribution
-  CNV_calls$reference = paste0(my.choice$reference.choice, collapse = ",")
+  CNV_calls$referenceSelected = paste0(my.choice$reference.choice, collapse = ",")
+  
+  # store the samples that were not considered for the reference distribution
+  CNV_calls$referenceExcluded = paste0(excludeFromReferenceSet, collapse = ",")
+  
+  # combine this current samples calls with all others
   all.cnvs = rbind(all.cnvs, CNV_calls)
   
 }
 
+# write the calls to a file
 write.table(
   all.cnvs,
   file = "all.cnvs.txt",
