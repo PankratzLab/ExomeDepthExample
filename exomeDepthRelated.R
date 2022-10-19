@@ -1,17 +1,19 @@
 # example for calling cnvs with exome depth, and excluding related individuals for use as a reference
+
+# install openxlsx if needed
 if (!require(openxlsx)) {
   install.packages("openxlsx")
 }
 library(ExomeDepth)
 library(openxlsx)
 
-# load a counts data frame
+# load a counts data frame, change path as needed
 load("/Users/Kitty/tmp/CountsAll.RData")
 
 # we limit this analysis to the autosome. To call chrX/chrY, simply select a single sex reference set that matches the sample of interest.
 all.counts = all.counts[which(!all.counts$chromosome %in% c("chrX", "chrY")), ]
 
-# load the family codes xlsx
+# load the family codes xlsx provided
 familyCodes = read.xlsx("/Users/Kitty/Downloads/Family Codes for CNV .xlsx")
 
 # Add and "X" to the id if the first character of the id is a number.
