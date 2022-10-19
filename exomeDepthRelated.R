@@ -26,20 +26,20 @@ familyCodes$all.counts.ID[update] = paste0("X", familyCodes$all.counts.ID[update
 
 # all.cnvs will store all of our CNV calls
 all.cnvs = data.frame()
-for (id in familyCodes$all.counts.ID) {
+for (id in familyCodes$all.counts.ID[1:5]) {
   if (!id %in% colnames(all.counts)) {
     print(paste0("WARNING: ", id, " was not found in the all.counts dataframe"))
     next
   }
   
-  # The unique family ID
+  # This gets the unique family ID for this sample
   currentFamily = unique(familyCodes$Family.ID[which(familyCodes$all.counts.ID ==
                                                        id)])
-  # Exclude all members of the family from the reference set
+  # This gets all samples from this family, that will be excluded from the reference set
   excludeFromReferenceSet = familyCodes$all.counts.ID[which(familyCodes$Family.ID ==
                                                               currentFamily)]
   
-  # print a message regardign which samples are excluded
+  # print a message regarding which samples are excluded
   print(
     paste0(
       "For id ",
@@ -55,14 +55,14 @@ for (id in familyCodes$all.counts.ID) {
   # This is the sample we are calling CNVS for
   my.test <- all.counts[, id]
   
-  # All possible samples, i.e all samples in the counts data frame...i.e all columns that are not chrom
+  # All possible samples, i.e all samples in the counts data frame...i.e all columns that are not chrom start...
   allPossibleReferenceSamples <-
     colnames(all.counts)[!colnames(all.counts) %in% c("chromosome", "start", "end", "exon")]
   
   # in case there are duplicated sample names, get a unique list of samples
   allPossibleReferenceSamples = unique(allPossibleReferenceSamples)
   
-  # Reference samples (those samples not in the same family). i.e remove samples in the excludeFromReferenceSet
+  # Reference samples (those samples not in the same family). i.e remove samples in the excludeFromReferenceSet list
   my.ref.samples <-
     allPossibleReferenceSamples[!allPossibleReferenceSamples %in% excludeFromReferenceSet]
   
