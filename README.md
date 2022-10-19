@@ -1,6 +1,8 @@
 # ExomeDepthExample
-Example for running exomeDepth
 
+Example for running ExomeDepth WES samples, accounting for relatedness in the reference sample distribution
+
+1. Clone this repository by running `git clone https://github.com/PankratzLab/ExomeDepthExample.git`
 1. Install ExomeDepth
 	- https://github.com/vplagnol/ExomeDepth
 	- `install.packages("ExomeDepth")`
