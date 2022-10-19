@@ -11,7 +11,18 @@ library(openxlsx)
 load("/Users/Kitty/tmp/CountsAll.RData")
 
 # we limit this analysis to the autosome. To call chrX/chrY, simply select a single sex reference set that matches the sample of interest.
-all.counts = all.counts[which(!all.counts$chromosome %in% c("chrX", "chrY")), ]
+all.counts = all.counts[which(!all.counts$chromosome %in% c("chrX", "chrY")),]
+
+# If desired, the following lines can be used to remove exons with a mean number of reads less than 1
+all.samples = colnames(all.counts)[!colnames(all.counts) %in% c("chromosome", "start", "end", "exon")]
+lowCoverage = apply(X = all.counts[, all.samples],
+                    MAR = 1,                    FUN = mean) < 1
+print(paste0(
+  "removing ",
+  length(lowCoverage[lowCoverage]),
+  " bins with mean coverage less than 1"
+))
+all.counts = all.counts[which(!lowCoverage),]
 
 # load the family codes xlsx provided
 familyCodes = read.xlsx("/Users/Kitty/Downloads/Family Codes for CNV .xlsx")
@@ -88,7 +99,6 @@ for (id in familyCodes$all.counts.ID) {
   
   # we now extract the counts for all reference samples that are not related to our sample of interest
   my.reference.set <- as.matrix(all.counts[, my.ref.samples])
-  
   # from the unrelated reference samples, select an optimized set
   my.choice <- select.reference.set (
     test.counts = my.test,
