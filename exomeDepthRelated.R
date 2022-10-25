@@ -8,13 +8,26 @@ library(ExomeDepth)
 library(openxlsx)
 
 # load a counts data frame, change path as needed
-load("/Users/Kitty/tmp/CountsAll.RData")
+load("/Users/Kitty/Downloads/CountsAll.RData")
 
 # we limit this analysis to the autosome. To call chrX/chrY, simply select a single sex reference set that matches the sample of interest.
-all.counts = all.counts[which(!all.counts$chromosome %in% c("chrX", "chrY")),]
+all.counts = all.counts[which(!all.counts$chromosome %in% c("chrX", "chrY")), ]
+
 
 # If desired, the following lines can be used to remove exons with a mean number of reads less than 1
 all.samples = colnames(all.counts)[!colnames(all.counts) %in% c("chromosome", "start", "end", "exon")]
+
+zeroBinCounts = data.frame()
+for (sample in all.samples) {
+  sData = all.counts[, sample]
+  tmpC = data.frame(sample = sample, zeroBinCount = length(sData[which(sData ==
+                                                                         0)]))
+  zeroBinCounts = rbind(zeroBinCounts, tmpC)
+}
+zeroBinCounts=zeroBinCounts[order(zeroBinCounts$zeroBinCount),]
+
+
+
 lowCoverage = apply(X = all.counts[, all.samples],
                     MAR = 1,                    FUN = mean) < 1
 
@@ -23,7 +36,9 @@ print(paste0(
   length(lowCoverage[lowCoverage]),
   " bins with mean coverage less than 1"
 ))
-all.counts = all.counts[which(!lowCoverage),]
+all.counts = all.counts[which(!lowCoverage), ]
+
+
 
 # load the family codes xlsx provided
 familyCodes = read.xlsx("/Users/Kitty/Downloads/Family Codes for CNV .xlsx")
@@ -161,7 +176,7 @@ for (id in familyCodes$all.counts.ID) {
   CNV_calls$referenceExcluded = paste0(excludeFromReferenceSet, collapse = ",")
   
   # combine this current samples calls with all others
-  all.cnvs = rbind(all.cnvs, CNV_calls)  
+  all.cnvs = rbind(all.cnvs, CNV_calls)
   
 }
 
