@@ -13,10 +13,9 @@ load("/Users/Kitty/Downloads/CountsAll.RData")
 # we limit this analysis to the autosome. To call chrX/chrY, simply select a single sex reference set that matches the sample of interest.
 all.counts = all.counts[which(!all.counts$chromosome %in% c("chrX", "chrY")), ]
 
-
-# If desired, the following lines can be used to remove exons with a mean number of reads less than 1
 all.samples = colnames(all.counts)[!colnames(all.counts) %in% c("chromosome", "start", "end", "exon")]
 
+# zeroBinCounts gives a sense of the number of bins with 0 coverage, per sample
 zeroBinCounts = data.frame()
 for (sample in all.samples) {
   sData = all.counts[, sample]
@@ -27,6 +26,7 @@ for (sample in all.samples) {
 zeroBinCounts=zeroBinCounts[order(zeroBinCounts$zeroBinCount),]
 
 
+# If desired, the following lines can be used to remove exons with a mean number of reads less than 1
 
 lowCoverage = apply(X = all.counts[, all.samples],
                     MAR = 1,                    FUN = mean) < 1
